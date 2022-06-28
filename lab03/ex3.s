@@ -42,22 +42,22 @@ main:
     la s1, source
     la s2, dest
 loop:
-    slli s3, t0, 2
+    slli s3, t0, 2   # load the kth item of source in t2
     add t1, s1, s3
-    lw t2, 0(t1)
+    lw t2, 0(t1)     
     beq t2, x0, exit
-    add a0, x0, t2
+    add a0, x0, t2   # call fun after save t0 and t2
     addi sp, sp, -8
     sw t0, 0(sp)
     sw t2, 4(sp)
     jal fun
     lw t0, 0(sp)
     lw t2, 4(sp)
-    addi sp, sp, 8
-    add t2, x0, a0
-    add t3, s2, s3
-    sw t2, 0(t3)
-    add s0, s0, t2
+    addi sp, sp, 8    
+    add t2, x0, a0   # save the result of fun into t2
+    add t3, s2, s3   # save the result into destination array 
+    sw t2, 0(t3)     
+    add s0, s0, t2   # increase the sum
     addi t0, t0, 1
     jal x0, loop
 exit:

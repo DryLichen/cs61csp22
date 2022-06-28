@@ -98,9 +98,10 @@ bool assert_state_equals(game_state_t* expected, game_state_t* actual) {
 }
 
 bool test_is_tail() {
-  // TODO: Implement this if you'd like!
-  printf("%s\n", "test_is_tail doesn't have any tests.");
-  return true;
+  if (assert_true("it is tail", true == is_tail('w'))) {
+    return true;
+  }
+  return false;
 }
 
 bool test_is_snake() {
