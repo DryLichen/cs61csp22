@@ -8,7 +8,6 @@ main:
     # Print the list
     add a0, s0, x0
     jal ra, print_list
-    # Print a newline
     jal ra, print_newline
 
     # === Calling `map(head, &square)` ===
@@ -52,46 +51,57 @@ main:
 map:
     # Prologue: Make space on the stack and back-up registers
     ### YOUR CODE HERE ###
-    addi sp, sp, 8
+    addi sp, sp, -12
     sw s0, 0(sp)
     sw s1, 4(sp)
+    sw ra, 8(sp)
 
+maploop:
     beq a0, x0, done # If we were given a null pointer (address 0), we're done.
 
     add s0, a0, x0 # Save address of this node in s0
     add s1, a1, x0 # Save address of function in s1
 
     # Remember that each node is 8 bytes long: 4 for the value followed by 4 for the pointer to next.
-    # What does this tell you about how you access the value and how you access the pointer to next?
 
     # Load the value of the current node into a0
-    # THINK: Why a0?
+    # THINK: Why a0? because a0 is argument for most of the functions
     ### YOUR CODE HERE ###
-    
+    lw a0, 0(s0)
 
     # Call the function in question on that value. DO NOT use a label (be prepared to answer why).
+    # (because map should be generic)
     # Hint: Where do we keep track of the function to call? Recall the parameters of "map".
     ### YOUR CODE HERE ###
+    jalr ra, s1, 0
 
     # Store the returned value back into the node
     # Where can you assume the returned value is?
     ### YOUR CODE HERE ###
+    sw a0, 0(s0)
 
     # Load the address of the next node into a0
     # The address of the next node is an attribute of the current node.
     # Think about how structs are organized in memory.
     ### YOUR CODE HERE ###
+    lw a0, 4(s0)
 
     # Put the address of the function back into a1 to prepare for the recursion
-    # THINK: why a1? What about a0?
+    # THINK: why a1? What about a0? (a0 is used to store the address of the next node)
     ### YOUR CODE HERE ###
+    add a1, s1, x0
 
     # Recurse
     ### YOUR CODE HERE ###
+    j maploop
 
 done:
     # Epilogue: Restore register values and free space from the stack
     ### YOUR CODE HERE ###
+    lw s0, 0(sp)
+    lw s1, 4(sp)
+    lw ra, 8(sp)
+    addi sp, sp, 12
 
     jr ra # Return to caller
 
@@ -104,6 +114,7 @@ square:
 decrement:
     addi a0, a0, -1
     jr ra
+
 
 # === Helper functions ===
 # You don't need to understand these, but reading them may be useful
