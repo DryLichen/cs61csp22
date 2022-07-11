@@ -101,6 +101,10 @@ main:
 # a1 is the address of the "output" array (defined above).
 f:
     # YOUR CODE GOES HERE!
+    addi a0, a0, 3
+    slli a0, a0, 2 
+    add a1, a1, a0
+    lw a0, 0(a1)
 
     jr ra               # Always remember to jr ra after your function!
 

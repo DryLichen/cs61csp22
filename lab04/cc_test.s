@@ -17,8 +17,8 @@ main:
     li a0, 2
     li a1, 7
     jal pow
-    li t0, 128 # verifies that pow returned the right value
-    beq a0, t0, next_test
+    li t0, 128 
+    beq a0, t0, next_test # verifies that pow returned the right value
     la a0, pow_string
     j failure
     
@@ -49,7 +49,9 @@ next_test:
 #
 pow:
     # BEGIN PROLOGUE
-    # FIXME Need to save the calle saved register(s)
+    # FIXME Need to save the callee saved register(s)
+    addi sp, sp, -4
+    sw s0, 0(sp)
     # END PROLOGUE
     li s0, 1
 pow_loop:
@@ -61,6 +63,8 @@ pow_end:
     mv a0, s0
     # BEGIN EPILOGUE
     # FIXME Need to restore the calle saved register(s)
+    lw s0, 0(sp)
+    addi sp, sp, 4
     # END EPILOGUE
     ret
 
@@ -73,8 +77,11 @@ pow_end:
 inc_arr:
     # BEGIN PROLOGUE
     # FIXME What other registers need to be saved?
-    addi sp, sp, -4
+    addi sp, sp, -16
     sw ra, 0(sp)
+    sw s0, 4(sp)
+    sw s1, 8(sp)
+    sw s2, 12(sp)
     # END PROLOGUE
     mv s0, a0 # Copy start of array to saved register
     mv s1, a1 # Copy length of array to saved register
@@ -86,10 +93,12 @@ inc_arr_loop:
     # Prepare to call helper_fn
     #
     # FIXME Add code to preserve the value in t0 before we call helper_fn
-    # Also ask yourself this: why don't we need to preserve t1?
+    # Also ask yourself this: why don't we need to preserve t1?(Because we won't use t1 after the function call)
+    add s2, t0, x0
     #
     jal helper_fn
     # FIXME Restore t0
+    add t0, s2, x0
     # Finished call for helper_fn
     addi t0, t0, 1 # Increment counter
     j inc_arr_loop
@@ -97,7 +106,10 @@ inc_arr_end:
     # BEGIN EPILOGUE
     # FIXME What other registers need to be restored?
     lw ra, 0(sp)
-    addi sp, sp, 4
+    lw s0, 4(sp)
+    lw s1, 8(sp)
+    lw s2, 12(sp)
+    addi sp, sp, 16
     # END EPILOGUE
     ret
 
@@ -112,12 +124,16 @@ inc_arr_end:
 helper_fn:
     # BEGIN PROLOGUE
     # FIXME: YOUR CODE HERE
+    addi sp, sp, -1
+    sw s0, 0(sp)
     # END PROLOGUE
     lw t1, 0(a0)
     addi s0, t1, 1
     sw s0, 0(a0)
     # BEGIN EPILOGUE
     # FIXME: YOUR CODE HERE
+    lw s0, 0(sp)
+    addi sp, sp, 1
     # END EPILOGUE
     ret
 
