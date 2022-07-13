@@ -25,16 +25,81 @@
 write_matrix:
 
 	# Prologue
+	addi sp, sp, -20
+	sw s0, 0(sp)
+	sw s1, 4(sp)
+	sw s2, 8(sp)
+	sw s3, 12(sp)
+	sw ra, 16(sp)
 
+	# save the arguments
+	mv s1, a1
+	mv s2, a2
+	mv s3, a3
 
+	# open the file
+	addi a1, x0, 1
+	jal fopen
+	addi t0, x0, -1
+	beq a0, t0, fopen_error
+	mv s0, a0
 
+	# write the number of rows
+	mv a0, s0
+	addi sp, sp, -4
+	sw s2, 0(sp)
+	mv a1, sp
+	addi a2, x0, 1
+	addi a3, x0, 4
+	jal fwrite
+	addi sp, sp, 4
+	addi t0, x0, 1
+	bne a0, t0, fwrite_error
 
+	# write the number of columns
+	mv a0, s0
+	addi sp, sp, -4
+	sw s3, 0(sp)
+	mv a1, sp
+	addi a2, x0, 1
+	addi a3, x0, 4
+	jal fwrite
+	addi sp, sp, 4
+	addi t0, x0, 1
+	bne a0, t0, fwrite_error
 
+	# write the matrix
+	mv a0, s0
+	mv a1, s1
+	mul a2, s2, s3
+	addi a3, x0, 4
+	jal fwrite
+	mul t0, s2, s3
+	bne a0, t0, fwrite_error
 
-
-
+	# close the file
+	mv a0, s0
+	jal fclose
+	bne a0, zero, fclose_error
 
 	# Epilogue
-
+	lw s0, 0(sp)
+	lw s1, 4(sp)
+	lw s2, 8(sp)
+	lw s3, 12(sp)
+	lw ra, 16(sp)
+	addi sp, sp, 20
 
 	ret
+
+fopen_error:
+	li a0, 27
+	j exit
+
+fclose_error:
+	li a0, 28
+	j exit
+
+fwrite_error:
+	li a0, 30
+	j exit
