@@ -6,7 +6,7 @@ set -eu
 # When in doubt, ask on Piazza.                           #
 #   e.g. python_exec="py"                                 #
 ###########################################################
-python_exec=""
+python_exec="python"
 if [ -z "${python_exec}" ]; then
   if command -v py 2>&1 >/dev/null; then
     python_exec=py
