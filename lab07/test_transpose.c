@@ -39,7 +39,7 @@ double benchmark(int *A, int *B, int n, int blocksize,
 
 int main( int argc, char **argv ) {
 
-    int n = 12000;
+    int n = 12001;
     int blocksize = 80;
 
     /* allocate an n*n block of integers for the matrices */

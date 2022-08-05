@@ -1,0 +1,76 @@
+********************    EXERCISE 1    **********************
+
+Scenario 1:
+1. What combination of parameters is producing the hit rate you observe? Write your answer 
+in the form “[parameter A], [parameter B]” where [parameter A] and [parameter B] complete 
+the following response: "Because [parameter A] in bytes is exactly equal to [parameter B] 
+in bytes." Note: Don't forget that 'cache size' is a valid parameter that you implicitly 
+set by choosing the block size and the # of blocks.
+    
+    A: step size     B: block size
+
+2. What is the hit rate if we increase Rep Count arbitrarily? Write your answer as a 
+decimal (e.g. "1.0" if the HR is 100%).
+
+    0.0. Step size is still equals to block size.
+
+3. How could we modify one program parameter to get an increased hit rate?
+Write your answer in the form “[parameter], [value]” where [parameter] is the program 
+parameter you want to change and [value] is the value you want to change it to. 
+Note: We don't care if we access the same array elements. Just give us a program parameter 
+modification that would increase the hit rate. However, do make sure that your proposed value
+is valid.
+
+    parameter: a1    value: 1.0
+
+Scenario 2:
+1. How many memory accesses are there per iteration of the inner loop (not the one involving Rep Count)?
+
+    64
+
+2. What is the repeating hit/miss pattern? 
+Write your answer in the form "mmhhmh" and so on, where your response is the shortest pattern that gets repeated.
+
+    mhhh
+
+3. Keeping everything else the same, what does our hit rate approach as Rep Count goes to infinity? 
+Try it out by changing the appropriate program parameter and letting the code run! Write your answer as a decimal.
+
+    1.0
+
+Scenario 3:
+1. What is the hit rate of the L1 cache? The L2 cache? Overall? Each hit rate is a decimal rounded to two places.
+
+    0.50   0.00   0.50  
+
+2. How many accesses do we have to the L1 cache total? How many of them are misses?
+
+    32    16
+
+3. How many accesses do we have to the L2 cache total? 
+HINT: Think about what the L1 cache has to do in order to make us access the L2 cache.
+
+    16
+
+4. What program parameter would allow us to increase the L2 hit rate, but keep the L1 hit rate the same?
+
+    Rep Count. If it is 2, L2 hit rate will chanege to 0.50
+
+5. Do our L1 and L2 hit rates decrease (-), stay the same (=), or increase (+) as we 
+(1) increase the number of blocks in L1, or (2) increase the L1 block size?
+
+    (1) L1 = ; L2 =
+    (2) L1 + ; L2 =
+
+
+********************    EXERCISE 2    **********************
+1. Which 2 orderings perform best for these 1000-by-1000 matrices?
+    
+    jki:    n = 1000, 5.889 Gflop/s
+    kji:    n = 1000, 4.458 Gflop/s
+    
+
+2. Which 2 orderings perform the worst?
+
+    kij:    n = 1000, 0.115 Gflop/s
+    ikj:    n = 1000, 0.090 Gflop/s

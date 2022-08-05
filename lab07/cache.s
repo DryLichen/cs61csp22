@@ -22,7 +22,8 @@
 array:	.word	2048 # max array size specified in BYTES (DO NOT CHANGE)
 
 .text
-main:	li	a0, 128	# array size in BYTES (should be a power of 2 < array size)
+main:	
+	li	a0, 128	# array size in BYTES (should be a power of 2 < array size)
 	li	a1, 1 # step size  (should be a power of 2 > 0)
 	li	a2, 1 # rep count  (int > 0)
 	li	a3, 0 # 0 = option 0, 1 = option 1
@@ -32,7 +33,7 @@ main:	li	a0, 128	# array size in BYTES (should be a power of 2 < array size)
 
 # Arguments:
 #  a0 = array size in bytes
-#  a1 = step size
+#  a1 = step size (bytes)
 #  a2 = number of times to repeat
 #  a3 = option: 0 (write) / 1 (read and write)
 accessWords:
