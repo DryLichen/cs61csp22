@@ -33,13 +33,37 @@ void v_add_naive(double* x, double* y, double* z) {
 // Adjacent Method
 void v_add_optimized_adjacent(double* x, double* y, double* z) {
     // TODO: Implement this function
-    // Do NOT use the `for` directive here!
+    #pragma omp parallel
+    {
+        int num_threads = omp_get_num_threads();
+        int thread_num = omp_get_thread_num();
+        for(int i = thread_num; i < ARRAY_SIZE; i += num_threads) {
+            z[i] = x[i] + y[i];
+        }
+    }
 }
 
 // Chunks Method
 void v_add_optimized_chunks(double* x, double* y, double* z) {
     // TODO: Implement this function
-    // Do NOT use the `for` directive here!
+    #pragma omp parallel
+    {
+        int num_threads = omp_get_num_threads();
+        int thread_num = omp_get_thread_num();
+        int chunk_size = ARRAY_SIZE / num_threads;
+        
+        int i = chunk_size * thread_num;
+        for(; i < chunk_size * (thread_num + 1); i++) {
+            z[i] = x[i] + y[i];
+        }
+                
+        //tail case
+        if(i == chunk_size * num_threads) {
+            for (; i < ARRAY_SIZE; i++) {
+                z[i] = x[i] + y[i];
+            }
+        }
+    }
 }
 
 /* -------------------------------Dot Product------------------------------*/
@@ -60,6 +84,18 @@ double dotp_manual_optimized(double* x, double* y, int arr_size) {
     double global_sum = 0.0;
     // TODO: Implement this function
     // Do NOT use the `reduction` directive here!
+    #pragma omp parallel
+    {
+        double sum = 0.0;
+        #pragma omp for
+        for (int i = 0; i < arr_size; i++) {
+            sum += x[i] * y[i];
+        }
+
+        #pragma omp critical
+        global_sum += sum;
+    } 
+    
     return global_sum;
 }
 
@@ -68,6 +104,11 @@ double dotp_reduction_optimized(double* x, double* y, int arr_size) {
     double global_sum = 0.0;
     // TODO: Implement this function
     // Please DO use the `reduction` directive here!
+    #pragma omp parallel for reduction(+: global_sum)
+    for (int i = 0; i < arr_size; i++) {
+        global_sum += x[i] * y[i];
+    }
+
     return global_sum;
 }
 
