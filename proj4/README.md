@@ -1,12 +1,5 @@
-# numc
-
-### Provide answers to the following questions.
-- How many hours did you spend on the following tasks?
-  - Task 1 (Matrix functions in C): ???
-  - Task 2 (Speeding up matrix operations): ???
-- Was this project interesting? What was the most interesting aspect about it?
-  - <b>???</b>
-- What did you learn?
-  - <b>???</b>
-- Is there anything you would change?
-  - <b>???</b>
+Attention:
+1. install the CUnit on Linux
+2. modify the make file to fit your own computer configuration
+3. initiate python venv in the project folder
+4. use the latest python3 version
